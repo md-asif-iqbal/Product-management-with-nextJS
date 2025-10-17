@@ -11,7 +11,7 @@ export default function Footer() {
             <div className="w-6 h-6 bg-gradient-to-br from-[color:var(--accent)] to-[color:var(--warn)] rounded-lg flex items-center justify-center">
               <span className="text-xs">🛍️</span>
             </div>
-            <span className="text-sm font-medium">Product Management App</span>
+            <span className="text-sm hidden md:block font-medium">Product Management App</span>
           </div>
           
           <div className="flex flex-col sm:flex-row items-center gap-2 text-sm opacity-70">
