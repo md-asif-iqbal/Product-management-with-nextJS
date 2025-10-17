@@ -1,4 +1,3 @@
-// file: app/login/page.tsx
 "use client";
 import { useLoginMutation, useRegisterMutation } from "@/store/services/products";
 import { setCredentials } from "@/store/slices/authSlice";
@@ -6,6 +5,19 @@ import { useAppDispatch } from "@/store";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import type { SerializedError } from "@reduxjs/toolkit";
+
+function getErrorMessage(err: unknown): string | null {
+  const e = err as FetchBaseQueryError | SerializedError | undefined;
+  if (!e) return null;
+  if (typeof (e as FetchBaseQueryError).status !== "undefined") {
+    const data = (e as FetchBaseQueryError).data as { message?: string } | undefined;
+    return data?.message ?? null;
+  }
+  if ((e as SerializedError).message) return (e as SerializedError).message as string;
+  return null;
+}
 
 export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -53,7 +65,7 @@ export default function LoginPage() {
         name: result.name 
       }));
       router.push("/products");
-    } catch (err) {
+    } catch (_err) {
       toast.error(isLogin ? "Login failed" : "Registration failed");
     }
   };
@@ -140,7 +152,7 @@ export default function LoginPage() {
             {error && (
               <div className="p-4 rounded-xl bg-[color:var(--danger)]/15 border border-[color:var(--danger)]/40">
                 <p className="text-sm text-[color:var(--danger)]">
-                  {error && 'data' in error ? (error as any).data?.message || "Authentication failed" : "Authentication failed"}
+                  {getErrorMessage(error) || "Authentication failed"}
                 </p>
               </div>
             )}

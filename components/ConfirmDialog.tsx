@@ -1,4 +1,3 @@
-// file: components/ConfirmDialog.tsx
 "use client";
 import { useEffect } from "react";
 

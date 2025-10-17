@@ -1,4 +1,3 @@
-// file: components/ProductForm.tsx
 "use client";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -7,6 +6,19 @@ import { Product, useCreateProductMutation, useGetProductQuery, useUpdateProduct
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import type { SerializedError } from "@reduxjs/toolkit";
+
+function getRtqErrorMessage(err: unknown): string | null {
+  const e = err as FetchBaseQueryError | SerializedError | undefined;
+  if (!e) return null;
+  if (typeof (e as FetchBaseQueryError).status !== "undefined") {
+    const data = (e as FetchBaseQueryError).data as { message?: string } | undefined;
+    return data?.message ?? null;
+  }
+  if ((e as SerializedError).message) return (e as SerializedError).message as string;
+  return null;
+}
 
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -42,11 +54,18 @@ export default function ProductForm({ id }: { id?: string }) {
         toast.success("Product updated successfully");
         router.push(`/products/${id}`);
       } else {
-        const created = await createProduct(values as unknown as Product).unwrap();
+        const payload: Omit<Product, "_id" | "createdAt" | "updatedAt" | "createdBy" | "createdByName"> = {
+          name: values.name,
+          price: values.price,
+          category: values.category,
+          sku: values.sku,
+          description: values.description,
+        };
+        const created: Product = await createProduct(payload).unwrap();
         toast.success("Product created successfully");
-        router.push(`/products/${(created as any)._id}`);
+        router.push(`/products/${created._id}`);
       }
-    } catch (error) {
+    } catch {
       toast.error(isEdit ? "Failed to update product" : "Failed to create product");
     }
   };
@@ -111,7 +130,7 @@ export default function ProductForm({ id }: { id?: string }) {
 
       {(createErr || updateErr) && (
         <div className="p-3 rounded-xl bg-[color:var(--danger)]/15 border border-[color:var(--danger)]/40">
-          {(createErr as any)?.data?.message || (updateErr as any)?.data?.message || "Something went wrong"}
+          {getRtqErrorMessage(createErr) || getRtqErrorMessage(updateErr) || "Something went wrong"}
         </div>
       )}
 

@@ -1,4 +1,3 @@
-// file: app/products/page.tsx
 "use client";
 import RequireAuth from "@/components/RequireAuth";
 import Link from "next/link";
@@ -7,7 +6,6 @@ import { useEffect, useMemo, useState } from "react";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { toast } from "sonner";
 import { useAppSelector } from "@/store";
-import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function ProductsPage() {
   return (
@@ -32,7 +30,7 @@ function ProductsInner() {
       await del(productId).unwrap();
       toast.success("Product deleted successfully");
       setToDelete(null);
-    } catch (error) {
+    } catch (_e) {
       toast.error("Failed to delete product");
     }
   };

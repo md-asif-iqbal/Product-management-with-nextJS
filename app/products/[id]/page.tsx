@@ -1,4 +1,3 @@
-// file: app/products/[id]/page.tsx
 "use client";
 import RequireAuth from "@/components/RequireAuth";
 import { useGetProductQuery, useDeleteProductMutation } from "@/store/services/products";
@@ -45,7 +44,7 @@ function DetailsInner() {
           </svg>
         </div>
         <h2 className="text-xl font-semibold mb-2">Product Not Found</h2>
-        <p className="opacity-70 mb-4">The product you're looking for doesn't exist or has been removed.</p>
+        <p className="opacity-70 mb-4">The product you&apos;re looking for doesn&apos;t exist or has been removed.</p>
         <Link href="/products" className="button button-primary">
           Back to Products
         </Link>
@@ -60,14 +59,13 @@ function DetailsInner() {
       await del(id).unwrap();
       toast.success("Product deleted successfully");
       router.push("/products");
-    } catch (error) {
+    } catch {
       toast.error("Failed to delete product");
     }
   };
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      {/* Header Section */}
       <div className="flex flex-col lg:flex-row lg:items-start gap-6">
         <div className="flex-1">
           <div className="flex items-start gap-4 mb-4">
@@ -93,7 +91,6 @@ function DetailsInner() {
           )}
         </div>
 
-        {/* Action Buttons */}
         <div className="flex flex-col gap-3 lg:min-w-[200px]">
           <Link 
             href="/products" 
@@ -138,7 +135,6 @@ function DetailsInner() {
         </div>
       </div>
 
-      {/* Product Details Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="card">
           <div className="flex items-center gap-3 mb-4">
