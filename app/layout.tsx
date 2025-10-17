@@ -4,6 +4,7 @@ import Providers from "./providers";
 import { NavBar } from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Toaster } from "sonner";
+import GlobalLoader from "@/components/GlobalLoader";
 
 export const metadata = {
   title: "Product Management App",
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 },
               }}
             />
+            <GlobalLoader />
           </Providers>
         </div>
       </body>

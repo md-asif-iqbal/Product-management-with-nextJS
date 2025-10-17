@@ -46,19 +46,13 @@ function ProductsInner() {
     <div className="space-y-6">
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
-        <div className="flex-1 relative">
+        <div className="flex-1">
           <input 
             className="input" 
             placeholder="Search products..." 
             value={q} 
             onChange={(e) => setQ(e.target.value)} 
-            disabled={isFetching}
           />
-          {isFetching && (
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[color:var(--accent)]"></div>
-            </div>
-          )}
         </div>
         <div className="flex gap-2 sm:ml-auto">
           <button 
@@ -67,16 +61,11 @@ function ProductsInner() {
               refetch();
               toast.success("Products refreshed");
             }}
-            disabled={isFetching}
           >
-            {isFetching ? (
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-1"></div>
-            ) : (
-              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-            )}
-            {isFetching ? "Loading..." : "Refresh"}
+            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            Refresh
           </button>
           <Link className="button button-primary button-header" href="/products/new">
             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -89,29 +78,7 @@ function ProductsInner() {
 
       {/* Content Section */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {isFetching && Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="card animate-pulse">
-            <div className="flex items-start justify-between gap-2 mb-3">
-              <div className="flex-1 min-w-0">
-                <div className="h-6 bg-[color:var(--surface2)] rounded mb-2"></div>
-                <div className="h-4 bg-[color:var(--surface2)] rounded w-3/4 mb-1"></div>
-                <div className="h-3 bg-[color:var(--surface2)] rounded w-1/2"></div>
-              </div>
-              <div className="h-8 bg-[color:var(--surface2)] rounded w-16"></div>
-            </div>
-            <div className="space-y-2 mb-4">
-              <div className="h-4 bg-[color:var(--surface2)] rounded"></div>
-              <div className="h-4 bg-[color:var(--surface2)] rounded w-5/6"></div>
-            </div>
-            <div className="flex gap-2">
-              <div className="h-8 bg-[color:var(--surface2)] rounded flex-1"></div>
-              <div className="h-8 bg-[color:var(--surface2)] rounded flex-1"></div>
-              <div className="h-8 bg-[color:var(--surface2)] rounded flex-1"></div>
-            </div>
-          </div>
-        ))}
-
-        {!isFetching && data?.items.map(p => {
+        {data?.items.map(p => {
           const isOwner = p.createdBy === email;
           return (
             <div key={p._id} className="card hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group">
@@ -202,41 +169,26 @@ function ProductsInner() {
       <div className="flex items-center justify-center gap-3 pt-6 border-t border-[color:var(--surface2)]/30">
         <button 
           className="button button-secondary button-sm" 
-          disabled={page <= 1 || isFetching} 
+          disabled={page <= 1} 
           onClick={() => setPage(p => p - 1)}
         >
-          {isFetching ? (
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-1"></div>
-          ) : (
-            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          )}
+          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
           Prev
         </button>
         <span className="opacity-80 text-sm px-3 py-1 bg-[color:var(--surface)] rounded-lg">
-          {isFetching ? (
-            <div className="flex items-center gap-2">
-              <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-[color:var(--accent)]"></div>
-              <span>Loading...</span>
-            </div>
-          ) : (
-            `Page ${data?.page || page} / ${totalPages}`
-          )}
+          Page {data?.page || page} / {totalPages}
         </span>
         <button 
           className="button button-secondary button-sm" 
-          disabled={page >= totalPages || isFetching} 
+          disabled={page >= totalPages} 
           onClick={() => setPage(p => p + 1)}
         >
           Next
-          {isFetching ? (
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current ml-1"></div>
-          ) : (
-            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          )}
+          <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
         </button>
       </div>
 
