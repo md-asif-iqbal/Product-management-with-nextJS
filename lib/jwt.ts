@@ -1,6 +1,6 @@
 // file: lib/jwt.ts
 import jwt from "jsonwebtoken";
-export type JwtPayload = { email: string };
+export type JwtPayload = { email: string; name?: string; userId?: string };
 
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-me";
 
