@@ -30,7 +30,7 @@ function ProductsInner() {
       await del(productId).unwrap();
       toast.success("Product deleted successfully");
       setToDelete(null);
-    } catch (_e) {
+    } catch {
       toast.error("Failed to delete product");
     }
   };

@@ -65,7 +65,7 @@ export default function LoginPage() {
         name: result.name 
       }));
       router.push("/products");
-    } catch (_err) {
+    } catch {
       toast.error(isLogin ? "Login failed" : "Registration failed");
     }
   };
