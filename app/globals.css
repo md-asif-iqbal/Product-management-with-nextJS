@@ -1,0 +1,126 @@
+
+@import "tailwindcss";
+
+:root {
+  --bg: #13212F;
+  --text: #EFF1F3;
+  --accent: #4E6E5D;
+  --warn: #AD8A64;
+  --danger: #A44A3F;
+  --surface: #13212F;   /* derived surface from bg */
+  --surface2: #1B2C3D;  /* derived border from bg */
+  color-scheme: dark;
+}
+
+html, body { 
+  height: 100%; 
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--surface2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border);
+}
+
+/* Utility composites (built from Tailwind v4 utilities) */
+.input { 
+  @apply w-full rounded-xl bg-[color:var(--surface)] px-4 py-3 border border-[color:var(--surface2)] 
+  focus:outline-none focus:ring-2 focus:ring-[color:var(--accent)] focus:border-[color:var(--accent)]
+  transition-all duration-200 placeholder:text-[color:var(--border)] text-[color:var(--text)]
+  h-12;
+}
+
+.button { 
+  @apply inline-flex items-center justify-center rounded-xl px-4 py-2 font-medium text-sm
+  transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed
+  hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap;
+}
+
+.button-sm {
+  @apply px-3 py-1.5 text-xs;
+}
+
+.button-header {
+  @apply px-3 py-3 text-sm h-12;
+}
+
+.button-lg {
+  @apply px-6 py-3 text-base;
+}
+
+.button-primary { 
+  @apply bg-gradient-to-r from-[color:var(--accent)] to-[color:var(--accent-light)] 
+  text-white shadow-lg hover:shadow-xl;
+}
+
+.button-secondary { 
+  @apply bg-[color:var(--surface)] text-[color:var(--text)] border border-[color:var(--surface2)] 
+  hover:bg-[color:var(--surface-light)] hover:border-[color:var(--border)];
+}
+
+.button-danger { 
+  @apply bg-gradient-to-r from-[color:var(--danger)] to-[color:var(--danger-light)] 
+  text-white shadow-lg hover:shadow-xl;
+}
+
+.card { 
+  @apply rounded-2xl bg-[color:var(--surface)] p-6 border border-[color:var(--surface2)] 
+  shadow-[0_8px_32px_rgba(0,0,0,0.3)] backdrop-blur-sm;
+}
+
+.label { 
+  @apply block text-sm mb-2 font-medium text-[color:var(--text)] opacity-90; 
+}
+
+.helper { 
+  @apply text-sm opacity-70 text-[color:var(--text)]; 
+}
+
+.error { 
+  @apply text-sm text-[color:var(--danger)] mt-1 font-medium; 
+}
+
+.link { 
+  @apply underline decoration-[color:var(--accent)] underline-offset-4 
+  hover:opacity-90 transition-opacity duration-200; 
+}
+
+/* Loading animations */
+@keyframes shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+.loading-shimmer {
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface-light) 50%, var(--surface) 75%);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(30, 41, 59, 0.4);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(71, 85, 105, 0.3);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent), var(--warn));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
