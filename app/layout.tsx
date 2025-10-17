@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import { Toaster } from "sonner";
 
 export const metadata = {
-  title: "Product Manager",
+  title: "Product Management App",
   description: "Product management application built with Next.js and Redux Toolkit",
 };
 

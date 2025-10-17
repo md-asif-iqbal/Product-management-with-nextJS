@@ -8,6 +8,8 @@ export type Product = {
   category: string;
   sku: string;
   description?: string;
+  createdBy: string;
+  createdByName: string;
   createdAt: string;
   updatedAt: string;
 };

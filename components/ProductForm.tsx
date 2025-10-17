@@ -51,6 +51,33 @@ export default function ProductForm({ id }: { id?: string }) {
     }
   };
 
+  if (isFetching) {
+    return (
+      <div className="space-y-4">
+        <div className="animate-pulse">
+          <div className="h-4 bg-[color:var(--surface2)] rounded w-16 mb-2"></div>
+          <div className="h-12 bg-[color:var(--surface2)] rounded"></div>
+        </div>
+        <div className="grid md:grid-cols-3 gap-4">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="animate-pulse">
+              <div className="h-4 bg-[color:var(--surface2)] rounded w-20 mb-2"></div>
+              <div className="h-12 bg-[color:var(--surface2)] rounded"></div>
+            </div>
+          ))}
+        </div>
+        <div className="animate-pulse">
+          <div className="h-4 bg-[color:var(--surface2)] rounded w-24 mb-2"></div>
+          <div className="h-32 bg-[color:var(--surface2)] rounded"></div>
+        </div>
+        <div className="flex gap-3 pt-4">
+          <div className="h-12 bg-[color:var(--surface2)] rounded flex-1"></div>
+          <div className="h-12 bg-[color:var(--surface2)] rounded w-24"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>

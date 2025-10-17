@@ -152,10 +152,15 @@ export default function LoginPage() {
               {isLoading ? (
                 <div className="flex items-center justify-center">
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                  {isLogin ? "Signing in..." : "Creating account..."}
+                  <span>{isLogin ? "Signing in..." : "Creating account..."}</span>
                 </div>
               ) : (
-                isLogin ? "Sign In" : "Create Account"
+                <div className="flex items-center justify-center">
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                  <span>{isLogin ? "Sign In" : "Create Account"}</span>
+                </div>
               )}
             </button>
           </form>

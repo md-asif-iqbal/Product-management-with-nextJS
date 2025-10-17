@@ -41,7 +41,8 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  if (!auth(req)) {
+  const user = auth(req);
+  if (!user) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
@@ -64,6 +65,16 @@ export async function PUT(
     return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
   }
 
+  // Check if user owns the product
+  const product = await db.collection("products").findOne({ _id });
+  if (!product) {
+    return NextResponse.json({ message: "Not found" }, { status: 404 });
+  }
+
+  if (product.createdBy !== user.email) {
+    return NextResponse.json({ message: "You can only edit your own products" }, { status: 403 });
+  }
+
   const update = { ...parse.data, updatedAt: new Date().toISOString() };
   const result = await db
     .collection("products")
@@ -82,7 +93,8 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  if (!auth(req)) {
+  const user = auth(req);
+  if (!user) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
@@ -93,6 +105,16 @@ export async function DELETE(
     _id = new ObjectId(params.id);
   } catch {
     return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
+  }
+
+  // Check if user owns the product
+  const product = await db.collection("products").findOne({ _id });
+  if (!product) {
+    return NextResponse.json({ message: "Not found" }, { status: 404 });
+  }
+
+  if (product.createdBy !== user.email) {
+    return NextResponse.json({ message: "You can only delete your own products" }, { status: 403 });
   }
 
   const res = await db.collection("products").deleteOne({ _id });

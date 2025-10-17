@@ -32,13 +32,17 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  if (!auth(req)) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  const user = auth(req);
+  if (!user) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  
   const json = await req.json().catch(() => null);
   const parse = productCreateSchema.safeParse(json);
   if (!parse.success) return NextResponse.json({ message: parse.error.issues[0]?.message || "Invalid payload" }, { status: 400 });
 
   const doc = {
     ...parse.data,
+    createdBy: user.email,
+    createdByName: user.name,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
