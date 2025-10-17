@@ -13,17 +13,18 @@ function auth(req: NextRequest) {
 // --- GET: Retrieve a product by ID ---
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   if (!auth(req)) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
+  const { id } = await params;
   const db = await getDb();
   let _id: ObjectId;
 
   try {
-    _id = new ObjectId(params.id);
+    _id = new ObjectId(id);
   } catch {
     return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
   }
@@ -39,7 +40,7 @@ export async function GET(
 // --- PUT: Update a product ---
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const user = auth(req);
   if (!user) {
@@ -57,10 +58,11 @@ export async function PUT(
   }
 
   const db = await getDb();
+  const { id } = await params;
   let _id: ObjectId;
 
   try {
-    _id = new ObjectId(params.id);
+    _id = new ObjectId(id);
   } catch {
     return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
   }
@@ -91,7 +93,7 @@ export async function PUT(
 // --- DELETE: Delete a product ---
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const user = auth(req);
   if (!user) {
@@ -99,10 +101,11 @@ export async function DELETE(
   }
 
   const db = await getDb();
+  const { id } = await params;
   let _id: ObjectId;
 
   try {
-    _id = new ObjectId(params.id);
+    _id = new ObjectId(id);
   } catch {
     return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
   }
